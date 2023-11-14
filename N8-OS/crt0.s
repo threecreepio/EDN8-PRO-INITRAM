@@ -62,6 +62,27 @@ vs1:
     ldx $4015
 
     ldy #0
+cpyram:
+    lda $0000, y
+    sta $7000, y
+    lda $0100, y
+    sta $7100, y
+    lda $0200, y
+    sta $7200, y
+    lda $0300, y
+    sta $7300, y
+    lda $0400, y
+    sta $7400, y
+    lda $0500, y
+    sta $7500, y
+    lda $0600, y
+    sta $7600, y
+    lda $0700, y
+    sta $7700, y
+    iny
+    bne cpyram
+
+    ldy #0
     lda #0
 clram:
     sta $0000, y

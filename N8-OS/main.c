@@ -23,9 +23,44 @@ void tst() {
     sysJoyWait();
 }*/
 
+u8 writeRamDump() {
+    u8 joy, resp, i;
+
+    resp = 0;
+    JOY_PORT1 = 0x01;
+    JOY_PORT1 = 0x00;
+
+    for (i = 0; i < 8; i++) {
+        joy <<= 1;
+        if ((JOY_PORT1 | JOY_PORT2) & 3)joy |= 1;
+    }
+
+    if (0 != (joy & JOY_R)) {
+        resp = fileOpen("EDN8/initram.bin", FA_OPEN_ALWAYS | FA_WRITE);
+        if (resp) return resp;
+
+        resp = fileWrite(0x7000, 0x800);
+        if (resp) return resp;
+
+        resp = fileClose();
+        if (resp) return resp;
+    }
+
+    mem_set((u8*)0x7000, 0, 0x800);
+
+    return resp;
+}
+
 int main() {
 
     u8 resp;
+
+    resp = writeRamDump();
+
+    if (resp) {
+        printError(resp);
+        while (1);
+    }
 
     resp = edInit(0);
 
