@@ -384,7 +384,7 @@ u8 fileHexView(u8 *path) {
         ptr = buff;
 
         for (i = 0; i < block; i++) {
-            REG_VRM_ATTR = PAL_B1;
+            REG_VRM_ATTR = i % 2 == 0 ? PAL_B3 : PAL_B1;
             gAppendHex8(*ptr++);
         }
 
